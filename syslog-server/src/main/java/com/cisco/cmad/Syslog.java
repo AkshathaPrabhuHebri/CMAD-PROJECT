@@ -1,6 +1,6 @@
 package com.cisco.cmad;
 
-import java.util.Date;
+import java.sql.Timestamp;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -14,7 +14,7 @@ public class Syslog {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer ID;
 	@Temporal(TemporalType.TIMESTAMP)
-	private Date timestamp;
+	private Timestamp timestamp;
 	private Integer severity;
 	private String facility;
 	private String message;
@@ -25,10 +25,10 @@ public class Syslog {
 	public void setID(Integer iD) {
 		ID = iD;
 	}
-	public Date getTimestamp() {
+	public Timestamp getTimestamp() {
 		return timestamp;
 	}
-	public void setTimestamp(Date timestamp) {
+	public void setTimestamp(Timestamp timestamp) {
 		this.timestamp = timestamp;
 	}
 	public Integer getSeverity() {
