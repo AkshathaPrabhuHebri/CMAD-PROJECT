@@ -1,0 +1,84 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1671\cocoasubrtf600
+{\fonttbl\f0\fswiss\fcharset0 Helvetica-Bold;\f1\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww24780\viewh14240\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\b\fs24 \cf0 API 1- Post Syslog Message
+\f1\b0 \
+\
+Method- POST\
+URL - /syslog\
+Request Body:\
+\{\
+	timestamp:\'9423 Nov 2009 12:13:24\'94,\
+         severity:1,\
+         facility:\'94user\'94,\
+         message:\'94Unable to open\'94       \
+\} \
+\
+Response Body: \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf0 \{\
+	timestamp:\'9423 Nov 2009 12:13:24\'94,\
+         severity:1,\
+         facility:\'94user\'94,\
+         message:\'94Unable to open\'94       \
+\} \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf0 \
+Response Header: \
+	Status: 201\
+	\
+\
+
+\f0\b API 2 - Get Statistics
+\f1\b0 \
+\
+Method - GET\
+URL - syslog/severity/count?startTime=10-11-2001&endTime=15-11-2001\
+Response Body:\
+[\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf0 \{\
+         severity:1,\
+         count:10\
+\} ,\
+\{\
+         severity:2,\
+         count:10\
+\}\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf0 ]\
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf0 Response Header: \
+	Status: 200\
+\
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\b \cf0 API 3 - Get Syslog
+\f1\b0 \
+\
+Method - GET\
+URL - syslog?startTime=10-11-2001&endTime=15-11-2001\
+Response Body:\
+[\
+\{\
+	timestamp:\'9423 Nov 2009 12:13:24\'94,\
+         severity:1,\
+         facility:\'94user\'94,\
+         message:\'94Unable to open\'94       \
+\} ,\
+\{\
+	timestamp:\'9423 Nov 2009 12:13:24\'94,\
+         severity:2,\
+         facility:\'94config\'94,\
+         message:\'94Unable to open\'94       \
+\} \
+]\
+\
+Response Header: \
+	Status: 200}
