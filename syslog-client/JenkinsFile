@@ -3,7 +3,7 @@ pipeline {
    agent none
    
    stages {
-      stage('build') {
+      stage('client-build') {
       	agent{
                 docker{
                  image 'node:8.16-alpine'
@@ -19,7 +19,7 @@ pipeline {
          }
       }
       
-      stage('test') {
+      stage('client-test') {
       	agent{
                 docker{
                  image 'node:8.16-alpine'
@@ -38,7 +38,7 @@ pipeline {
       
 	  
 	  
-	  stage('docker-package'){
+	  stage('client-docker-package'){
 	  	agent any
 	  	steps{
       		echo 'Packaging syslog-client app with docker'
