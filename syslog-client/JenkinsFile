@@ -44,7 +44,7 @@ pipeline {
       		echo 'Packaging syslog-client app with docker'
       		script{
       			docker.withRegistry('https://index.docker.io/v1/', 'dockerlogin') {
-      				def syslogClientImage = docker.build("myselfakshatha/syslog-client:v${env.BUILD_ID}", "./result/")
+      				def syslogClientImage = docker.build("myselfakshatha/syslog-client:v${env.BUILD_ID}", "./syslog-client/")
       				syslogClientImage.push()
       				syslogClientImage.push("latest")
       				}
