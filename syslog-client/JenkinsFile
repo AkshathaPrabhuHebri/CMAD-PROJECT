@@ -1,0 +1,63 @@
+pipeline {
+
+   agent none
+   
+   stages {
+      stage('build') {
+      	agent{
+                docker{
+                 image 'node:8.16-alpine'
+                 args '-v $HOME/node_modules:/root/node_modules'
+                }
+		}
+		
+         steps {
+            echo 'compile syslog client service'
+            dir('syslog-client'){
+            	sh 'npm install'
+            }
+         }
+      }
+      
+      stage('test') {
+      	agent{
+                docker{
+                 image 'node:8.16-alpine'
+                 args '-v $HOME/node_modules:/root/node_modules'
+                }
+		}
+         steps {
+            echo 'run unit tests'
+            dir('syslog-client'){
+            	sh 'npm install'
+		sh 'npm test'
+            }
+            
+         }
+      }
+      
+	  
+	  
+	  stage('docker-package'){
+	  	agent any
+	  	steps{
+      		echo 'Packaging syslog-client app with docker'
+      		script{
+      			docker.withRegistry('https://index.docker.io/v1/', 'dockerlogin') {
+      				def syslogClientImage = docker.build("myselfakshatha/syslog-client:v${env.BUILD_ID}", "./result/")
+      				syslogClientImage.push()
+      				syslogClientImage.push("latest")
+      				}
+      			}
+      			
+      		}
+      	}
+      			
+   }
+   
+        post{
+         always{
+             echo 'the job is complete'
+         }
+   }
+}
