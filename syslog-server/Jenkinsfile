@@ -55,6 +55,7 @@ pipeline{
                 dir("syslog-server"){
                   sh 'mvn package -DskipTests'
                   archiveArtifacts artifacts: '**/target/*.jar'
+//                  sh mv '**/target/*.jar' $WORKSPACE
                 }
             }
         }
@@ -66,6 +67,11 @@ pipeline{
 //         }
          steps{
            echo 'Packaging worker app with docker'
+           echo $JENKINS_HOME
+           sh 'cd $JENKINS_HOME'
+           sh 'ls -la'
+                             
+           
            script{
              docker.withRegistry('https://index.docker.io/v1/', 'dockerlogin') {
                 def workerImage = docker.build("myselfakshatha/syslog-server:v${env.BUILD_ID}", "./syslog-server")

@@ -1,7 +1,10 @@
 from maven:3.6.1-jdk-8-slim
+RUN mkdir -p /app
 WORKDIR /app
 COPY . .
 RUN mvn package && \
-      mv target/syslog-server.jar /run/syslog-server.jar && \
+	  pwd && \
+	  ls target/ && \
+      mv /app/target/*.jar /run/syslog-server.jar && \
       rm -rf /app/*
-CMD java  -jar /run/syslog-server.jar
+CMD java -jar /run/syslog-server.jar
