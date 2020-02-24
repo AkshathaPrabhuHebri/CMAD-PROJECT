@@ -17,7 +17,7 @@ pipeline{
             }
             steps{
                 echo "Building syslog server app..."
-                dir("worker"){
+                dir("syslog-server"){
                   sh 'mvn compile'
                 }
             }
@@ -34,7 +34,7 @@ pipeline{
             }
             steps{
                 echo "Testing syslog server app..."
-                dir("worker"){
+                dir("syslog-server"){
                   sh 'mvn clean test'
                 }
             }
