@@ -51,7 +51,7 @@ pipeline{
 //              branch 'master'
 //            }
             steps{
-                echo "Packaging worker app..."
+                echo "Packaging syslog server app..."
                 dir("syslog-server"){
                   sh 'mvn package -DskipTests'
                   archiveArtifacts artifacts: '**/target/*.jar'
@@ -59,28 +59,34 @@ pipeline{
                 }
             }
         }
+        
+       stage('copy-artifact'){
+           agent any
+           steps{
+                copyArtifacts filter: '**/target/*.jar'
+                sh 'ls -la'
+                sh 'mv *.jar ./syslog-server/'
+           }
 
-       stage('docker-package-server'){
-         agent any
+       }
+
+
+//       stage('docker-package-server'){
+//         agent any
 //         when{
 //           changeset "**/syslog-server/**"
 //         }
-         steps{
-           echo 'Packaging worker app with docker'
-           sh 'echo $JENKINS_HOME'
-           sh 'cd $JENKINS_HOME'
-           sh 'ls -la'
-                             
-           
-           script{
-             docker.withRegistry('https://index.docker.io/v1/', 'dockerlogin') {
-                def workerImage = docker.build("myselfakshatha/syslog-server:v${env.BUILD_ID}", "./syslog-server")
-                workerImage.push()
-                workerImage.push("latest")
-             }
-          } 
-      }
-}
+//         steps{
+//           echo 'Packaging worker app with docker'
+//           script{
+//             docker.withRegistry('https://index.docker.io/v1/', 'dockerlogin') {
+//                def workerImage = docker.build("myselfakshatha/syslog-server:v${env.BUILD_ID}", "./syslog-server")
+//                workerImage.push()
+//                workerImage.push("latest")
+//             }
+//          } 
+//      }
+//}
 
     }
     
