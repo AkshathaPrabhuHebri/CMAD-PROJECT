@@ -67,7 +67,7 @@ pipeline{
 //         }
          steps{
            echo 'Packaging worker app with docker'
-           echo $JENKINS_HOME
+           sh 'echo $JENKINS_HOME'
            sh 'cd $JENKINS_HOME'
            sh 'ls -la'
                              
