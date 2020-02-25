@@ -64,7 +64,7 @@ pipeline{
            agent any
            steps{
                 copyArtifacts filter: '**/target/*.jar', fingerprintArtifacts: true, projectName: '${JOB_NAME}', selector: specific('${BUILD_NUMBER}'), target: './syslog-server/'
-                sh 'ls -la ./syslog-server/'
+                sh 'ls -la ./syslog-server/target'
            }
 
        }
