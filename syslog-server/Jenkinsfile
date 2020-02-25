@@ -54,7 +54,7 @@ pipeline{
                 echo "Packaging syslog server app..."
                 dir("syslog-server"){
                   sh 'mvn package -DskipTests'
-                  archiveArtifacts artifacts: '**/target/*.jar'
+                  archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
 //                  sh mv '**/target/*.jar' $WORKSPACE
                 }
             }
@@ -63,9 +63,8 @@ pipeline{
        stage('copy-artifact'){
            agent any
            steps{
-                copyArtifacts filter: '**/target/*.jar'
-                sh 'ls -la'
-                sh 'mv *.jar ./syslog-server/'
+                copyArtifacts filter: '**/target/*.jar', fingerprintArtifacts: true, projectName: '${JOB_NAME}', selector: specific('${BUILD_NUMBER}'), target: './syslog-server/'
+                sh 'ls -la ./syslog-server/'
            }
 
        }
