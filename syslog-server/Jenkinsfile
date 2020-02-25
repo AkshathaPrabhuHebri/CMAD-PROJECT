@@ -55,7 +55,6 @@ pipeline{
                 dir("syslog-server"){
                   sh 'mvn package -DskipTests'
                   archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
-//                  sh mv '**/target/*.jar' $WORKSPACE
                 }
             }
         }
@@ -63,6 +62,7 @@ pipeline{
        stage('copy-artifact'){
            agent any
            steps{
+           		echo "copying artifact from 'package-server' stage"
                 copyArtifacts filter: '**/target/*.jar', fingerprintArtifacts: true, projectName: '${JOB_NAME}', selector: specific('${BUILD_NUMBER}'), target: './syslog-server/'
                 sh 'ls -la ./syslog-server/target'
            }
@@ -70,22 +70,22 @@ pipeline{
        }
 
 
-//       stage('docker-package-server'){
-//         agent any
+       stage('docker-package-server'){
+         agent any
 //         when{
 //           changeset "**/syslog-server/**"
 //         }
-//         steps{
-//           echo 'Packaging worker app with docker'
-//           script{
-//             docker.withRegistry('https://index.docker.io/v1/', 'dockerlogin') {
-//                def workerImage = docker.build("myselfakshatha/syslog-server:v${env.BUILD_ID}", "./syslog-server")
-//                workerImage.push()
-//                workerImage.push("latest")
-//             }
-//          } 
-//      }
-//}
+         steps{
+           echo 'Packaging worker app with docker'
+           script{
+             docker.withRegistry('https://index.docker.io/v1/', 'dockerlogin') {
+                def workerImage = docker.build("myselfakshatha/cmad-syslog-server:v${env.BUILD_ID}", "./syslog-server")
+                workerImage.push()
+                workerImage.push("latest")
+             }
+          } 
+      }
+}
 
     }
     
