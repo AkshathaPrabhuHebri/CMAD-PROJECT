@@ -8,7 +8,5 @@ RUN cd /app/syslog-client/
 
 RUN npm install express -g
 RUN export NODE_PATH=/usr/local/lib/node_modules/
-
-ENV PORT 3000
-EXPOSE 3000
 CMD ["node", "server.js"]
+EXPOSE 3000
