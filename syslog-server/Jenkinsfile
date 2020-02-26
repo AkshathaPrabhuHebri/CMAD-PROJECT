@@ -92,7 +92,7 @@ pipeline{
 		    steps{
 		        echo 'Deploy the application'
 		        sh 'cd ..'
-		        sh 'docker-compose up -d'
+		        sh 'docker-compose up'
 		    }
 
 		}
