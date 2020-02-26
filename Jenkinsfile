@@ -1,9 +1,12 @@
 pipeline{
 
     agent none 
-    
+
     stages{
       stage("server"){
+        when{
+          changeset "**/syslog-server/**"
+        }
         stages{
           stage("build-server"){
               agent{
@@ -13,9 +16,6 @@ pipeline{
                   }
               } 
 
-              when{
-                changeset "**/syslog-server/**"
-              }
               steps{
                   echo "Building syslog server app..."
                   dir("syslog-server"){
@@ -29,9 +29,6 @@ pipeline{
                     image 'maven:3.6.1-jdk-8-slim'
                     args '-v m2cache:/root/.m2'
                   }
-              }
-              when{
-                changeset "**/syslog-server/**"
               }
               steps{
                   echo "Testing syslog server app..."
@@ -47,9 +44,6 @@ pipeline{
                     args '-v m2cache:/root/.m2'
                   }
               }
-              when{
-                changeset "**/syslog-server/**"
-              }
               steps{
                   echo "Packaging syslog server app..."
                   dir("syslog-server"){
@@ -60,11 +54,7 @@ pipeline{
           }
           stage('server-copy-artifact'){
             agent any
-              when{
-                changeset "**/syslog-server/**"
-              }
-            
-              steps{
+            steps{
                 echo "copying artifact from 'package-server' stage"
                   copyArtifacts filter: '**/target/*.jar', fingerprintArtifacts: true, projectName: '${JOB_NAME}', selector: specific('${BUILD_NUMBER}'), target: './syslog-server/'
                   sh 'ls -la ./syslog-server/target'
@@ -73,9 +63,6 @@ pipeline{
           }
           stage('docker-package-server'){
             agent any
-            when{
-              changeset "**/syslog-server/**"
-            }
             steps{
               echo 'Packaging worker app with docker'
               script{
@@ -91,6 +78,9 @@ pipeline{
       }
       
       stage('client'){
+        when{
+          changeset "**/syslog-client/**"
+        }
         stages{
           stage('client-build') {
               agent{
@@ -99,9 +89,6 @@ pipeline{
                     //   args '-v $HOME/node_modules:/root/node_modules'
                       }
             }
-              when{
-                changeset "**/syslog-client/**"
-              }
               steps {
                   echo 'compile syslog client service'
                   dir('syslog-client'){
@@ -121,9 +108,6 @@ pipeline{
                       args '-v $HOME/node_modules:/root/node_modules'
                       }
             }
-              when{
-                changeset "**/syslog-client/**"
-              }
               steps {
                   echo 'run unit tests'
                   dir('syslog-client'){
@@ -137,9 +121,6 @@ pipeline{
           
           stage('client-copy-artifact') {
               agent any
-              when{
-                changeset "**/syslog-client/**"
-              }
               steps{
                 echo 'copying artifact'
                 copyArtifacts filter: '**/dist/*.*', fingerprintArtifacts: true, projectName: '${JOB_NAME}', selector: specific('${BUILD_NUMBER}'), target: './syslog-client/'
@@ -147,9 +128,6 @@ pipeline{
           }
           stage('client-docker-package'){
             agent any
-            when{
-              changeset "**/syslog-client/**"
-            }
             steps{
                 echo 'Packaging syslog-client app with docker'
                 script{
