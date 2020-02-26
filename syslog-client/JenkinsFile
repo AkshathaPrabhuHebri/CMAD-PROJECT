@@ -7,9 +7,9 @@ pipeline {
       	agent{
                 docker{
                  image 'node:10.9-alpine'
-                 args '-v $HOME/node_modules:/root/node_modules'
+               //   args '-v $HOME/node_modules:/root/node_modules'
                 }
-		}
+		   }
 		
          steps {
             echo 'compile syslog client service'
