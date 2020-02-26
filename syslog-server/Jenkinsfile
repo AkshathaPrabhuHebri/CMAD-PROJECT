@@ -82,10 +82,21 @@ pipeline{
                 def workerImage = docker.build("myselfakshatha/cmad-syslog-server:v${env.BUILD_ID}", "./syslog-server")
                 workerImage.push()
                 workerImage.push("latest")
-             }
-          } 
-      }
-}
+             		}
+          		} 
+      		}
+		}
+		
+		stage('deploy-to-dev'){
+		    agent any
+		    steps{
+		        echo 'Deploy the application'
+		        sh 'cd ..'
+		        sh 'docker-compose up -d'
+		    }
+
+		}
+
 
     }
     

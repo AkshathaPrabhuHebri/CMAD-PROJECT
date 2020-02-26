@@ -4,12 +4,6 @@ volumes:
   db-data:
 
 services:
-  server:
-    image: myselfakshatha/syslog-server
-    ports:
-      - 5000:8080
-    depends_on:
-      -
 
 #  redis:
 #    image: redis:alpine
@@ -20,9 +14,25 @@ services:
 #      - redis
 
   db:
-    image: postgres:9.4
+    image: mysql:8.0.19
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'logrepo'
+      MYSQL_USER: 'root'
+      MYSQL_PASSWORD: 'password'
+      MYSQL_ROOT_PASSWORD: 'password'
+    ports:
+      - 33060:3306
     volumes:
-      - db-data:/var/lib/postgresql/data
+      - db-data:/var/lib/mysql
+
+  server:
+    image: myselfakshatha/cmad-syslog-server:latest
+    ports:
+      - 5100:8080
+    depends_on:
+      - db
+
 
 #  result:
 #    image:   myselfakshatha/vote

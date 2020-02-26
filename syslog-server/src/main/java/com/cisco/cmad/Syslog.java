@@ -13,7 +13,7 @@ public class Syslog {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer ID;
-	@Temporal(TemporalType.TIMESTAMP)
+//	@Temporal(TemporalType.TIMESTAMP)
 	private Timestamp timestamp;
 	private Integer severity;
 	private String facility;
