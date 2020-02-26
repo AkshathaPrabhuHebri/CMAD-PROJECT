@@ -46,10 +46,10 @@ pipeline{
                    args '-v m2cache:/root/.m2'
                  }
             }
-//       when{
-//              changeset "**/syslog-server/**"
+       when{
+              changeset "**/syslog-server/**"
 //              branch 'master'
-//            }
+            }
             steps{
                 echo "Packaging syslog server app..."
                 dir("syslog-server"){
@@ -72,9 +72,9 @@ pipeline{
 
        stage('docker-package-server'){
          agent any
-//         when{
-//           changeset "**/syslog-server/**"
-//         }
+         when{
+           changeset "**/syslog-server/**"
+         }
          steps{
            echo 'Packaging worker app with docker'
            script{

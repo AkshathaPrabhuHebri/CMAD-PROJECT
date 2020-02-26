@@ -10,13 +10,16 @@ pipeline {
                //   args '-v $HOME/node_modules:/root/node_modules'
                 }
 		   }
-		
+         when{
+           changeset "**/syslog-client/**"
+         }
          steps {
             echo 'compile syslog client service'
             dir('syslog-client'){
             	sh 'npm install'
                sh 'npm run-script build'
-               archiveArtifacts artifacts: 'dist', fingerprint: true
+               sh 'ls -la'
+               archiveArtifacts artifacts: '**/dist', fingerprint: true
             }
 
          }
@@ -28,7 +31,10 @@ pipeline {
                  image 'node:10.9-alpine'
                  args '-v $HOME/node_modules:/root/node_modules'
                 }
-		}
+		   }
+         when{
+           changeset "**/syslog-client/**"
+         }
          steps {
             echo 'run unit tests'
             dir('syslog-client'){
@@ -42,14 +48,20 @@ pipeline {
 	  
      stage('client-copy-artifact') {
         agent any
+         when{
+           changeset "**/syslog-client/**"
+         }
         steps{
            echo 'copying artifact'
-           copyArtifacts filter: 'dist', fingerprintArtifacts: true, projectName: '${JOB_NAME}', selector: specific('${BUILD_NUMBER}'), target: './syslog-client/'
+           copyArtifacts filter: '**/dist', fingerprintArtifacts: true, projectName: '${JOB_NAME}', selector: specific('${BUILD_NUMBER}'), target: './syslog-client/'
         }
      }
 	  
 	  stage('client-docker-package'){
 	  	agent any
+      when{
+         changeset "**/syslog-client/**"
+      }
 	  	steps{
       		echo 'Packaging syslog-client app with docker'
       		script{
