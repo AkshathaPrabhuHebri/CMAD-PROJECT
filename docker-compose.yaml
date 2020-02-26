@@ -34,6 +34,14 @@ services:
     depends_on:
       - db
 
+  client:
+    image: myselfakshatha/cmad-syslog-client:latest
+    restart: always
+    ports:
+      - 3000:3000
+    depends_on:
+      - server
+
 
 #  result:
 #    image:   myselfakshatha/vote
