@@ -10,7 +10,7 @@
     "start": "webpack-dev-server --config=config/webpack.dev.js --hot",
     "start:reload": "webpack-dev-server --config=config/webpack.dev.js",
     "start:style": "cross-env MAP_STYLE=true webpack-dev-server --config=config/webpack.dev.js --hot",
-    "build": "webpack --config=config/webpack.prod.js",
+    "build": "webpack --config=config/webpack.prod.js && cp config/server/server.js dist/",
     "analyze": "cross-env ENABLE_ANALYZER=true yarn build",
     "test": "jest",
     "test:coverage": "jest --coverage"
@@ -18,7 +18,8 @@
   "dependencies": {
     "prop-types": "^15.6.2",
     "react": "^16.4.1",
-    "react-dom": "^16.4.1"
+    "react-dom": "^16.4.1",
+    "express": "^4.17.1"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",
@@ -27,6 +28,7 @@
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
     "clean-webpack-plugin": "^0.1.19",
+    "copy-webpack-plugin": "^5.1.1",
     "cross-env": "^5.2.0",
     "css-loader": "^1.0.0",
     "enzyme": "^3.3.0",
