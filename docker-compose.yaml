@@ -1,0 +1,49 @@
+version: "3.7"
+
+volumes:
+  db-data:
+
+services:
+
+#  redis:
+#    image: redis:alpine
+
+#  worker:
+#    image: schoolofdevops/vote-worker
+#    depends_on:
+#      - redis
+
+  db:
+    image: mysql:8.0.19
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'logrepo'
+      MYSQL_USER: 'root'
+      MYSQL_PASSWORD: 'password'
+      MYSQL_ROOT_PASSWORD: 'password'
+    ports:
+      - 33060:3306
+    volumes:
+      - db-data:/var/lib/mysql
+
+  server:
+    image: myselfakshatha/cmad-syslog-server:latest
+    restart: always
+    ports:
+      - 5100:8080
+    depends_on:
+      - db
+
+  client:
+    image: myselfakshatha/cmad-syslog-client:latest
+    ports:
+      - 5200:3000
+    depends_on:
+      - server
+
+
+#  result:
+#    image:   myselfakshatha/vote
+#    ports:
+#      - 5001:80
+
