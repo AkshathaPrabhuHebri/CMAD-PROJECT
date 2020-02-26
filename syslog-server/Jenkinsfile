@@ -89,6 +89,9 @@ pipeline{
 		
 		stage('deploy-to-dev'){
 		    agent any
+		    when{
+              branch 'master'
+			}
 		    steps{
 		        echo 'Deploy the application'
 		        sh 'cd ..'

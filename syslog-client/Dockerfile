@@ -1,18 +1,12 @@
-FROM node:8.9-alpine
+FROM node:10.9-alpine
 
-RUN mkdir -p /app
-WORKDIR /app
+WORKDIR /app/syslog-client
 
-RUN npm install -g nodemon
-RUN npm config set registry https://registry.npmjs.org
-COPY package.json /app/package.json
-RUN npm install \
- && npm ls \
- && npm cache clean --force \
- && mv /app/node_modules /node_modules
-COPY . /app
+COPY ./dist/* /app/syslog-client/
 
-ENV PORT 80
-EXPOSE 80
+RUN cd /app/syslog-client/
+
+ENV PORT 3000c
+EXPOSE 3000
 
 CMD ["node", "server.js"]

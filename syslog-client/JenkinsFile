@@ -6,7 +6,7 @@ pipeline {
       stage('client-build') {
       	agent{
                 docker{
-                 image 'node:8.16-alpine'
+                 image 'node:10.9-alpine'
                  args '-v $HOME/node_modules:/root/node_modules'
                 }
 		}
@@ -15,14 +15,17 @@ pipeline {
             echo 'compile syslog client service'
             dir('syslog-client'){
             	sh 'npm install'
+               sh 'npm run-script build'
+               archiveArtifacts artifacts: dist, fingerprint: true
             }
+
          }
       }
       
       stage('client-test') {
       	agent{
                 docker{
-                 image 'node:8.16-alpine'
+                 image 'node:10.9-alpine'
                  args '-v $HOME/node_modules:/root/node_modules'
                 }
 		}
@@ -30,13 +33,20 @@ pipeline {
             echo 'run unit tests'
             dir('syslog-client'){
             	sh 'npm install'
-		sh 'npm test'
+		         sh 'npm test'
             }
             
          }
       }
       
 	  
+     stage('client-copy-artifact') {
+        agent any
+        steps{
+           echo 'copying artifact'
+           copyArtifacts filter: 'dist', fingerprintArtifacts: true, projectName: '${JOB_NAME}', selector: specific('${BUILD_NUMBER}'), target: './syslog-client/'
+        }
+     }
 	  
 	  stage('client-docker-package'){
 	  	agent any
@@ -57,7 +67,7 @@ pipeline {
    
         post{
          always{
-             echo 'the job is complete'
+             echo 'the cmad-syslog-client job is complete'
          }
    }
 }
