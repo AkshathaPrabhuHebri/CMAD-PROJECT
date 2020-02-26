@@ -38,7 +38,7 @@ services:
     image: myselfakshatha/cmad-syslog-client:latest
     restart: always
     ports:
-      - 3000:3000
+      - 5200:3000
     depends_on:
       - server
 
