@@ -61,6 +61,10 @@ pipeline{
         
        stage('copy-artifact'){
            agent any
+            when{
+              changeset "**/syslog-server/**"
+            }
+           
            steps{
            		echo "copying artifact from 'package-server' stage"
                 copyArtifacts filter: '**/target/*.jar', fingerprintArtifacts: true, projectName: '${JOB_NAME}', selector: specific('${BUILD_NUMBER}'), target: './syslog-server/'
