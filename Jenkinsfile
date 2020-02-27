@@ -4,9 +4,9 @@ pipeline{
 
     stages{
       stage("server"){
-        when{
-          changeset "**/syslog-server/**"
-        }
+        // when{
+          // changeset "**/syslog-server/**"
+        // }
         stages{
           stage("build-server"){
               agent{
@@ -78,9 +78,9 @@ pipeline{
       }
       
       stage('client'){
-        when{
-          changeset "**/syslog-client/**"
-        }
+        // when{
+          // changeset "**/syslog-client/**"
+        // }
         stages{
           stage('client-build') {
               agent{
