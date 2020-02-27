@@ -37,7 +37,7 @@ public class SyslogController {
 	//Returns an array of arrays with severity and corresponding count
 	@RequestMapping(path = "/log/severity/count", method = RequestMethod.GET)
 	public ResponseEntity<List<SevStat>> getStats(@RequestParam(name = "startTime") String startTime, @RequestParam(name = "endTime") String endTime) {
-		List<SevStat> count = (List<SevStat>) repo.syslogCountBySeverityInTimePeriod(startTime, endTime);
+		List<SevStat> count = repo.syslogCountBySeverityInTimePeriod(startTime, endTime);
 		return new ResponseEntity<List<SevStat>>(count, HttpStatus.OK);
 	}
 
