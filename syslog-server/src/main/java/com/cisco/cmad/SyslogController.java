@@ -1,7 +1,14 @@
 package com.cisco.cmad;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
+
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -28,15 +35,15 @@ public class SyslogController {
 	
 	//get logs with start and end time
 	@RequestMapping(path = "/log", method = RequestMethod.GET)
-	public ResponseEntity<List<Syslog>> findByTimePeriod(@RequestParam(name = "startTime") String startTime, @RequestParam(name = "endTime") String endTime) {
-		List<Syslog> logs = repo.getSyslogInTimePeriod(startTime,endTime);
+	public ResponseEntity<List<Syslog>> findByTimePeriod(@RequestParam(name = "startTime") Timestamp startTime, @RequestParam(name = "endTime") Timestamp endTime) {
+		List<Syslog> logs = repo.findAllByTimestampBetween(startTime,endTime);
 		return new ResponseEntity<List<Syslog>>(logs, HttpStatus.OK);
 	}
 	
 	
 	//Returns an array of arrays with severity and corresponding count
 	@RequestMapping(path = "/log/severity/count", method = RequestMethod.GET)
-	public ResponseEntity<List<SevStat>> getStats(@RequestParam(name = "startTime") String startTime, @RequestParam(name = "endTime") String endTime) {
+	public ResponseEntity<List<SevStat>> getStats(@RequestParam(name = "startTime") Timestamp startTime, @RequestParam(name = "endTime") Timestamp endTime) {
 		List<SevStat> count = repo.syslogCountBySeverityInTimePeriod(startTime, endTime);
 		return new ResponseEntity<List<SevStat>>(count, HttpStatus.OK);
 	}
