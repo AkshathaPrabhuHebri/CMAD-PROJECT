@@ -1,7 +1,47 @@
 import React, { Component } from 'react';
 
 class LogViewer extends Component {
+  constructor(props){
+    super(props);
+    this.state={
+      ...props,
+      data:[]
+    };
+    console.log(this.state);
+    this.sendRequestAndSetState(this.state.props.startTime,this.state.props.endTime)
+  }
+
+  sendRequestAndSetState(startTime,endTime){
+    startTime=startTime.toString().replace("T"," ").replace("Z","");
+    endTime=endTime.toString().replace("T"," ").replace("Z","");
+    let self=this;
+    fetch("http://server:8080/log?startTime="+endTime+"&endTime="+startTime).then((resp) => resp.json()).then((data) =>{
+      self.setState({data:data});
+    })
+  }
+
+  componentWillReceiveProps(nextProps){
+    this.setState({...nextProps});
+    console.log(nextProps);
+    this.sendRequestAndSetState(nextProps.props.startTime,nextProps.props.endTime);
+  }
+
+  generateRows(data){
+    let rows =data.map(row => {
+      return (
+           <tr key={row.id}>
+              <th scope="row">{row.timestamp}</th>
+              <td>{row.severity}</td>
+              <td>{row.facility}</td>
+              <td>{row.message}</td>
+            </tr>
+      )
+    })
+    return rows;
+  }
+
   render(){
+    console.log(this.state.data);
     return (
       <div>
         <table class="table table-striped">
@@ -14,45 +54,10 @@ class LogViewer extends Component {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <th scope="row">Nov 03 2003 10:12:12</th>
-              <td>Error</td>
-              <td>kern</td>
-              <td>Restart nginx server</td>
-            </tr>
-            <tr>
-              <th scope="row">Nov 03 2003 10:12:12</th>
-              <td>Error</td>
-              <td>user</td>
-              <td>Unable to run</td>
-            </tr>
-            <tr>
-              <th scope="row">Nov 03 2003 10:12:12</th>
-              <td>Info</td>
-              <td>kern</td>
-              <td>Unable to runr</td>
-            </tr>
-            <tr>
-              <th scope="row">Nov 03 2003 10:12:12</th>
-              <td>Error</td>
-              <td>kern</td>
-              <td>Restart nginx server</td>
-            </tr>
-            <tr>
-              <th scope="row">Nov 03 2003 10:12:12</th>
-              <td>Error</td>
-              <td>user</td>
-              <td>Unable to run</td>
-            </tr>
-            <tr>
-              <th scope="row">Nov 03 2003 10:12:12</th>
-              <td>Info</td>
-              <td>kern</td>
-              <td>Unable to runr</td>
-            </tr>
+            {this.generateRows(this.state.data)}
           </tbody>
         </table>
-        <nav aria-label="...">
+        {/* <nav aria-label="...">
           <ul class="pagination">
             <li class="page-item disabled">
               <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
@@ -66,7 +71,7 @@ class LogViewer extends Component {
               <a class="page-link" href="#">Next</a>
             </li>
           </ul>
-        </nav>
+        </nav> */}
       </div>
       
     );
