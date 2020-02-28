@@ -4,6 +4,30 @@ import LogViewer from './logViewer/LogViewer.jsx'
 import SummaryView from './summaryView/SummaryView.jsx'
 
 class App extends Component {
+  
+    constructor(props){
+      super(props);
+      let startDateTime=new Date();
+      let endDateTime=new Date(startDateTime.getTime());
+      endDateTime.setHours(endDateTime.getHours()-parseInt(1));
+      this.state = {
+        startTime:startDateTime.toISOString(),
+        endTime:endDateTime.toISOString(),
+        hour:"1"
+      }
+    }
+
+    setTime(hour){
+      let startDateTime=new Date();
+      let endDateTime=new Date(startDateTime.getTime());
+      endDateTime.setHours(endDateTime.getHours()-parseInt(hour));
+      this.setState({
+        hour:hour,
+        startTime:startDateTime.toISOString(),
+        endTime:endDateTime.toISOString()
+      })
+    }
+
     render() {
         return (
             <div className="App">
@@ -14,14 +38,14 @@ class App extends Component {
                 <div className="col"></div>
                 <div className="col"></div>
                 <div className="col text-right">
-                  <Interval></Interval>
+                  <Interval setTime={this.setTime.bind(this)}></Interval>
                 </div>
               </div>
               <div>
-                <SummaryView></SummaryView>
+                <SummaryView props={{...this.state}}></SummaryView>
               </div>
               <div>
-                <LogViewer></LogViewer>
+                <LogViewer props={{...this.state}}></LogViewer>
               </div>
             </div>
         );
