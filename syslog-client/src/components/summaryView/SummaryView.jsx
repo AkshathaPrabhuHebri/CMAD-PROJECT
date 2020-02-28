@@ -6,6 +6,16 @@ class SummaryView extends Component {
         super(props);
         this.state={
           ...props,
+          formatData:[
+            {label:"Emergency",number:0,color:"blue",code:0},
+            {label:"Alert",number:0,color:"blue",code:1},
+            {label:"Critical",number:0,color:"blue",code:2},
+            {label:"Error",number:0,color:"blue",code:3},
+            {label:"Warning",number:0,color:"blue",code:4},
+            {label:"Notice",number:0,color:"blue",code:5},
+            {label:"Informational",number:0,color:"blue",code:6},
+            {label:"Debug",number:0,color:"blue",code:7},
+          ],
           data:[]
         };
         console.log(this.state);
@@ -27,7 +37,7 @@ class SummaryView extends Component {
         startTime=startTime.toString().replace("T"," ").replace("Z","");
         endTime=endTime.toString().replace("T"," ").replace("Z","");
         let self=this;
-        fetch("http://server:8080/log/severity/count?startTime="+endTime+"&endTime="+startTime).then((resp) => resp.json()).then((data) =>{
+        fetch("http://localhost:5100/log/severity/count?startTime="+endTime+"&endTime="+startTime).then((resp) => resp.json()).then((data) =>{
           self.setState({data:data});
         })
       }
@@ -39,6 +49,18 @@ class SummaryView extends Component {
       }
 
       generateRows(data){
+        //   let formatData=this.state.formatData.map(eachData=>{
+        //     let stats={
+        //         number:eachData.count,
+        //         label:row.severity,
+        //         color:eachData.color
+        //      };
+        //     return (
+        //         <div className="col" key={row.severity}>
+        //             <SummaryCard stats={stats}></SummaryCard>
+        //         </div>
+        //     );
+        //   });
         let rows =data.map(row => {
          let stats={
             number:row.count,

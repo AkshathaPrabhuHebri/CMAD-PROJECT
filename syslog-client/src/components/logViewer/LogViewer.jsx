@@ -15,7 +15,7 @@ class LogViewer extends Component {
     startTime=startTime.toString().replace("T"," ").replace("Z","");
     endTime=endTime.toString().replace("T"," ").replace("Z","");
     let self=this;
-    fetch("http://server:8080/log?startTime="+endTime+"&endTime="+startTime).then((resp) => resp.json()).then((data) =>{
+    fetch("http://localhost:5100/log?startTime="+endTime+"&endTime="+startTime).then((resp) => resp.json()).then((data) =>{
       self.setState({data:data});
     })
   }
