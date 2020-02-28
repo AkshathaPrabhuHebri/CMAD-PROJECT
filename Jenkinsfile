@@ -4,9 +4,9 @@ pipeline{
 
     stages{
       stage("server"){
-        // when{
-          // changeset "**/syslog-server/**"
-        // }
+        when{
+          changeset "**/syslog-server/**"
+        }
         stages{
           stage("build-server"){
               agent{
