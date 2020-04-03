@@ -1,4 +1,4 @@
-package com.cisco.cmad;
+package com.cisco.cmad.Controller;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -8,6 +8,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.cisco.cmad.DAO.SyslogRepository;
+import com.cisco.cmad.DTO.SevStat;
+import com.cisco.cmad.Model.Syslog;
 
 @RestController
 @CrossOrigin

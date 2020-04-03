@@ -1,4 +1,4 @@
-package com.cisco.cmad;
+package com.cisco.cmad.DTO;
 
 public class SevStat {
 	

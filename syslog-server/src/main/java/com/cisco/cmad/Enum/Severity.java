@@ -1,4 +1,4 @@
-package com.cisco.cmad;
+package com.cisco.cmad.Enum;
 
 import java.util.HashMap;
 import java.util.Map;

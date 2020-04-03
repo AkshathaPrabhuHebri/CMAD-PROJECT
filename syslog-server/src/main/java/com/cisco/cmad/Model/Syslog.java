@@ -1,4 +1,4 @@
-package com.cisco.cmad;
+package com.cisco.cmad.Model;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -15,13 +15,14 @@ import javax.persistence.TemporalType;
 public class Syslog {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Integer ID;
+	private int ID;
 	@Column(name = "timestamp", columnDefinition="DATETIME")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date timestamp;
-	private Integer severity;
+	private int severity;
 	private String facility;
 	private String message;
+	private String deviceName;
 	
 	public Integer getID() {
 		return ID;
@@ -53,5 +54,10 @@ public class Syslog {
 	public void setMessage(String message) {
 		this.message = message;
 	}
-	
+	public String getDeviceName() {
+		return deviceName;
+	}
+	public void setDeviceName(String deviceName) {
+		this.deviceName = deviceName;
+	}
 }
