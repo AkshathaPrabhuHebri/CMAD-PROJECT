@@ -1,6 +1,6 @@
-package com.cisco.cmad.DTO;
+package com.cisco.cmad.dto;
 
-public class SevStat {
+public class SeverityStatistics {
 	
 	private Integer severity;
 	private long count;
@@ -16,7 +16,7 @@ public class SevStat {
 	public void setCount(long count) {
 		this.count = count;
 	}
-	public SevStat(Integer severity, long count) {
+	public SeverityStatistics(Integer severity, long count) {
 		super();
 		this.severity = severity;
 		this.count = count;

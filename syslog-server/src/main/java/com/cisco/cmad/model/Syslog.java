@@ -1,4 +1,4 @@
-package com.cisco.cmad.Model;
+package com.cisco.cmad.model;
 
 import java.sql.Timestamp;
 import java.util.Date;

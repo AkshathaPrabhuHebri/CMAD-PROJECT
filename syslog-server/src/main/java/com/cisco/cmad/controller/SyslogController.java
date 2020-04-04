@@ -1,4 +1,4 @@
-package com.cisco.cmad.Controller;
+package com.cisco.cmad.controller;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -19,9 +19,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.cisco.cmad.DAO.SyslogRepository;
-import com.cisco.cmad.DTO.SevStat;
-import com.cisco.cmad.Model.Syslog;
+import com.cisco.cmad.dao.SyslogRepository;
+import com.cisco.cmad.dto.SeverityStatistics;
+import com.cisco.cmad.model.Syslog;
 
 @RestController
 @CrossOrigin
@@ -48,9 +48,9 @@ public class SyslogController {
 	
 	//Returns an array of arrays with severity and corresponding count
 	@RequestMapping(path = "/log/severity/count", method = RequestMethod.GET)
-	public ResponseEntity<List<SevStat>> getStats(@RequestParam(name = "startTime") Timestamp startTime, @RequestParam(name = "endTime") Timestamp endTime) {
-		List<SevStat> count = repo.syslogCountBySeverityInTimePeriod(startTime, endTime);
-		return new ResponseEntity<List<SevStat>>(count, HttpStatus.OK);
+	public ResponseEntity<List<SeverityStatistics>> getStats(@RequestParam(name = "startTime") Timestamp startTime, @RequestParam(name = "endTime") Timestamp endTime) {
+		List<SeverityStatistics> count = repo.syslogCountBySeverityInTimePeriod(startTime, endTime);
+		return new ResponseEntity<List<SeverityStatistics>>(count, HttpStatus.OK);
 	}
 
 
