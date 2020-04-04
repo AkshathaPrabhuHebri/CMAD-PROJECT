@@ -3,6 +3,9 @@ package com.cisco.cmad.dao;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+
+import org.springframework.data.mongodb.repository.Aggregation;
 
 //import javax.persistence.TemporalType;
 
@@ -26,10 +29,12 @@ public interface SyslogRepository extends MongoRepository<Syslog, String> {
 //	public List<Syslog> findAllByTimestampBetween(
 //			@Temporal(TemporalType.TIMESTAMP) Date startTime,
 //			@Temporal(TemporalType.TIMESTAMP) Date endTime);
-//	@Query(value="[{$match: {$and: [{timestamp: {$gt : ?0}}, {timestamp: {$lt : ?1}}]}},{$group: {_id : \"$severity\", number:  { $sum : 1} }}]")
-//	public  List<SeverityStatistics> syslogCountBySeverityInTimePeriod(Timestamp startTime, Timestamp endTime){
-//		
-//	}
+	//@Query(value="db.syslog.aggregate[{$match: {$and: [{timestamp: {$gt : ?0}}, {timestamp: {$lt : ?1}}]}},{$group: {_id : \"$severity\", number:  { $sum : 1} }}]")
+	@Aggregation(pipeline = {"[{$match: {$and: [{timestamp: {$gt : ?0}}, {timestamp: {$lt : ?1}}]}},{$group: {_id : \\\"$severity\\\", number:  { $sum : 1} }}]"})
+	public  List<Map<String,Object>> syslogCountBySeverityInTimePeriod(Timestamp startTime, Timestamp endTime);
+	
+//	public  List<SeverityStatistics> syslogCountBySeverityInTimePeriod(Timestamp startTime, Timestamp endTime);
+
 	
 	List<Syslog> findByTimestampBetween(Timestamp startTime, Timestamp endTime);
 

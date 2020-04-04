@@ -1,8 +1,10 @@
 package com.cisco.cmad.controller;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 //import javax.persistence.Temporal;
 //import javax.persistence.TemporalType;
@@ -61,13 +63,13 @@ public class SyslogController {
 	@RequestMapping(path = "/log/severity/count", method = RequestMethod.GET)
 	public ResponseEntity<List<SeverityStatistics>> getStats(@RequestParam(name = "startTime") Timestamp startTime, @RequestParam(name = "endTime") Timestamp endTime) {
 //		List<SeverityStatistics> count = repo.syslogCountBySeverityInTimePeriod(startTime, endTime);
-//		return new ResponseEntity<List<SeverityStatistics>>(count, HttpStatus.OK);
-//		Query query = new Query();
 		
-		MatchOperation filterLogs = Aggregation.match(new Criteria("timestamp").gt(startTime).lt(endTime));
-		GroupOperation groupBySeverityAndSumDocuments = Aggregation.group("severity").count().as("count");
-		Aggregation aggregation = Aggregation.newAggregation(filterLogs,groupBySeverityAndSumDocuments);
-		AggregationResults<SeverityStatistics> result = mongoTemplate.aggregate(aggregation);
+		List<Map<String,Object>> sevStatlist =  repo.syslogCountBySeverityInTimePeriod(startTime, endTime);
+		List<SeverityStatistics> count = new ArrayList<SeverityStatistics>();
+		for (Map<String,Object> map : sevStatlist) {
+			count.add(new SeverityStatistics((int) map.get("_id"), (long) map.get("number")));
+		}
+		return new ResponseEntity<List<SeverityStatistics>>(count, HttpStatus.OK);
 	}	
 	
 }

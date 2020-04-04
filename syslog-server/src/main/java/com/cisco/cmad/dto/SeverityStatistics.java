@@ -2,12 +2,12 @@ package com.cisco.cmad.dto;
 
 public class SeverityStatistics {
 	
-	private Integer severity;
+	private int severity;
 	private long count;
-	public Integer getSeverity() {
+	public int getSeverity() {
 		return severity;
 	}
-	public void setSeverity(Integer severity) {
+	public void setSeverity(int severity) {
 		this.severity = severity;
 	}
 	public long getCount() {
@@ -16,7 +16,8 @@ public class SeverityStatistics {
 	public void setCount(long count) {
 		this.count = count;
 	}
-	public SeverityStatistics(Integer severity, long count) {
+	
+	public SeverityStatistics(int severity, long count) {
 		super();
 		this.severity = severity;
 		this.count = count;
