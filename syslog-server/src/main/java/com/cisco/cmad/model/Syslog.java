@@ -3,31 +3,36 @@ package com.cisco.cmad.model;
 import java.sql.Timestamp;
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-@Entity
+//import javax.persistence.Column;
+//import javax.persistence.Entity;
+//import javax.persistence.GeneratedValue;
+//import javax.persistence.GenerationType;
+//import javax.persistence.Id;
+//import javax.persistence.Temporal;
+//import javax.persistence.TemporalType;
+
+//@Entity
+@Document
 public class Syslog {
+//	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int ID;
-	@Column(name = "timestamp", columnDefinition="DATETIME")
-	@Temporal(TemporalType.TIMESTAMP)
+	private String ID;
+//	@Column(name = "timestamp", columnDefinition="DATETIME")
+//	@Temporal(TemporalType.TIMESTAMP)
 	private Date timestamp;
 	private int severity;
 	private String facility;
 	private String message;
 	private String deviceName;
 	
-	public Integer getID() {
+
+	public String getID() {
 		return ID;
 	}
-	public void setID(Integer iD) {
+	public void setID(String iD) {
 		ID = iD;
 	}
 	public Date getTimestamp() {

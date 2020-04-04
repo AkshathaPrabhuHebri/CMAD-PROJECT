@@ -4,11 +4,17 @@ import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+//import javax.persistence.Temporal;
+//import javax.persistence.TemporalType;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.AggregationResults;
+import org.springframework.data.mongodb.core.aggregation.GroupOperation;
+import org.springframework.data.mongodb.core.aggregation.MatchOperation;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,23 +43,31 @@ public class SyslogController {
 		return new ResponseEntity<Syslog>(log, HttpStatus.CREATED);
 	}
 	
+	//find all logs
+	@RequestMapping(path = "/logs", method = RequestMethod.GET)
+	public ResponseEntity<List<Syslog>> findAllLogs() {
+		List<Syslog> logs = repo.findAll();
+		return new ResponseEntity<List<Syslog>>(logs, HttpStatus.OK);
+	}
 	
 	//get logs with start and end time
 	@RequestMapping(path = "/log", method = RequestMethod.GET)
 	public ResponseEntity<List<Syslog>> findByTimePeriod(@RequestParam(name = "startTime") Timestamp startTime, @RequestParam(name = "endTime") Timestamp endTime) {
-		List<Syslog> logs = repo.findAllByTimestampBetween(startTime,endTime);
+		List<Syslog> logs = repo.findByTimestampBetween(startTime,endTime);
 		return new ResponseEntity<List<Syslog>>(logs, HttpStatus.OK);
 	}
-	
 	
 	//Returns an array of arrays with severity and corresponding count
 	@RequestMapping(path = "/log/severity/count", method = RequestMethod.GET)
 	public ResponseEntity<List<SeverityStatistics>> getStats(@RequestParam(name = "startTime") Timestamp startTime, @RequestParam(name = "endTime") Timestamp endTime) {
-		List<SeverityStatistics> count = repo.syslogCountBySeverityInTimePeriod(startTime, endTime);
-		return new ResponseEntity<List<SeverityStatistics>>(count, HttpStatus.OK);
-	}
-
-
-	
+//		List<SeverityStatistics> count = repo.syslogCountBySeverityInTimePeriod(startTime, endTime);
+//		return new ResponseEntity<List<SeverityStatistics>>(count, HttpStatus.OK);
+//		Query query = new Query();
+		
+		MatchOperation filterLogs = Aggregation.match(new Criteria("timestamp").gt(startTime).lt(endTime));
+		GroupOperation groupBySeverityAndSumDocuments = Aggregation.group("severity").count().as("count");
+		Aggregation aggregation = Aggregation.newAggregation(filterLogs,groupBySeverityAndSumDocuments);
+		AggregationResults<SeverityStatistics> result = mongoTemplate.aggregate(aggregation);
+	}	
 	
 }
