@@ -20,15 +20,19 @@ def generate_syslogs():
         "User user1 executed shut down the port Gi0/0/3",
         "User abc is not authorized to chnage the port administrative status"
     ]
+    device_names = [
+        "device1", "device2", "device3", "device4", "device5"
+    ]
     syslog = {"timestamp": "", "severity": "", "facility": "", "message": ""}
     counter = 0
     while True:
         ts = datetime.datetime.utcnow()
-        syslog["timestamp"] = ts.isoformat()
+        syslog["timestamp"] = ts.isoformat().split('.')[0]
         syslog["severity"] = random.randint(0, 7)
         character_set = string.ascii_letters + string.digits
         syslog["facility"] = random_string_generator(character_set, 3)
         syslog["message"] = random.choice(syslog_msgs)
+        syslog["deviceName"] = random.choice(device_names)
         counter += 1
         print(syslog)
         post_syslog(syslog)
@@ -36,7 +40,7 @@ def generate_syslogs():
 
 def post_syslog(syslog):
     data = json.dumps(syslog)
-    url = "http://localhost:8080/log"
+    url = "http://localhost:8090/log"
     headers = {"Content-Type": "application/json"}
     response = requests.request("POST", url, headers=headers, data=data)
     print(response.status_code)
