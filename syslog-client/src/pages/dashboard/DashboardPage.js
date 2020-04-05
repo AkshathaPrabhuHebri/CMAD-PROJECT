@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import Interval from './interval/Interval.jsx'
-import LogViewer from './logViewer/LogViewer.jsx'
-import SummaryView from './summaryView/SummaryView.jsx'
+import Interval from '../../components/interval/Interval'
+import LogViewer from '../../components/logViewer/LogViewer'
+import SummaryView from '../../components/summaryView/SummaryView'
+import { Router, Route, Link, browserHistory, IndexRoute } from 'react-router'
 
-class App extends Component {
+class DashboardPage extends Component {
   
     constructor(props){
       super(props);
@@ -52,4 +53,4 @@ class App extends Component {
     }
 } 
 
-export default App;
+export default DashboardPage;
