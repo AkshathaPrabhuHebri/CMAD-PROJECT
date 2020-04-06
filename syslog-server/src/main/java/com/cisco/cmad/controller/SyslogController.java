@@ -29,8 +29,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cisco.cmad.dao.SyslogRepository;
+import com.cisco.cmad.dao.UserRepository;
 import com.cisco.cmad.dto.SeverityStatistics;
 import com.cisco.cmad.model.Syslog;
+import com.cisco.cmad.model.User;
 
 @RestController
 @CrossOrigin
@@ -38,6 +40,8 @@ public class SyslogController {
 
 	@Autowired
 	private SyslogRepository repo;
+	
+	private UserRepository userRepo;
 
 	//create a single log
 	@RequestMapping(path = "/log", method = RequestMethod.POST)
@@ -78,6 +82,15 @@ public class SyslogController {
 			count.add(new SeverityStatistics(Integer.parseInt(doc.get("_id").toString()), Long.parseLong(doc.get("total").toString()) ));
 		}
 		return new ResponseEntity<List<SeverityStatistics>>(count, HttpStatus.OK);
-	}	
+	}
+	
+//	//create a single user
+//	@RequestMapping(path = "/user", method = RequestMethod.POST)
+//	public ResponseEntity<User> addUser(@RequestBody User user) {
+//		System.out.println(user);
+//		userRepo.save(user);
+//		return new ResponseEntity<User>(user, HttpStatus.CREATED);
+//	}
+
 	
 }

@@ -1,18 +1,10 @@
 package com.cisco.cmad.model;
 
-import java.sql.Timestamp;
 import java.util.Date;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-//import javax.persistence.Column;
-//import javax.persistence.Entity;
-//import javax.persistence.GeneratedValue;
-//import javax.persistence.GenerationType;
-//import javax.persistence.Id;
-//import javax.persistence.Temporal;
-//import javax.persistence.TemporalType;
 
 //@Entity
 @Document
