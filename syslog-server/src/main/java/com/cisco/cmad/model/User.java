@@ -3,14 +3,18 @@ package com.cisco.cmad.model;
 import java.util.List;
 
 import org.springframework.data.annotation.Id;
+
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document
 public class User {
 	@Id
-	private String ID;
+	private String uid;
+	@Indexed(unique = true)
 	private String username;
 	private String password;
+	private int authLevel;
 	private List<String> devices;
 	public String getUsername() {
 		return username;
@@ -29,6 +33,19 @@ public class User {
 	}
 	public void setDevices(List<String> devices) {
 		this.devices = devices;
+	}
+
+	public String getUid() {
+		return uid;
+	}
+	public void setUid(String uid) {
+		this.uid = uid;
+	}
+	public int getAuthLevel() {
+		return authLevel;
+	}
+	public void setAuthLevel(int authLevel) {
+		this.authLevel = authLevel;
 	}
 
 }
