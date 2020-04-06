@@ -17,7 +17,7 @@ services:
     image: mongo:4.2
     restart: always
     environment:
-      MONGODB_DATABASE=logrepo
+      - MONGODB_DATABASE=logrepo
     ports:
       - 5300:27017
     volumes:
@@ -27,7 +27,7 @@ services:
     image: myselfakshatha/cmad-syslog-server:latest
     restart: always
     ports:
-      - 5100:8080
+      - 5100:8090
     depends_on:
       - db
 
