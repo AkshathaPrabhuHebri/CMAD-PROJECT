@@ -84,7 +84,7 @@ class SummaryView extends Component {
     render(){
         return (
             <div className="summaryView">
-                <div class="row">
+                <div className="row">
                     {this.generateRows(this.state.data)}
                 </div>
                 {/* <div className="row">

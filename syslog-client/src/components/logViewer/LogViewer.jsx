@@ -44,7 +44,7 @@ class LogViewer extends Component {
     console.log(this.state.data);
     return (
       <div>
-        <table class="table table-striped">
+        <table className="table table-striped">
           <thead>
             <tr>
               <th scope="col">Timestamp</th>
