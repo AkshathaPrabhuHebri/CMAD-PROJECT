@@ -19,6 +19,8 @@ import org.springframework.stereotype.Repository;
 
 import com.cisco.cmad.dto.SeverityStatistics;
 import com.cisco.cmad.model.Syslog;
+import com.cisco.cmad.model.User;
+
 import org.springframework.data.mongodb.repository.Query;
 
 @Repository
