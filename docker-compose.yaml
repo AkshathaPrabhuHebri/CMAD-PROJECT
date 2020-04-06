@@ -1,7 +1,7 @@
 version: "3.7"
 
 volumes:
-  db-data:
+  mongodb_data_container:
 
 services:
 
@@ -14,17 +14,12 @@ services:
 #      - redis
 
   db:
-    image: mysql:8.0.19
+    image: mongo:4.2
     restart: always
-    environment:
-      MYSQL_DATABASE: 'logrepo'
-      MYSQL_USER: 'root'
-      MYSQL_PASSWORD: 'password'
-      MYSQL_ROOT_PASSWORD: 'password'
     ports:
-      - 33060:3306
+      - 5300:27017
     volumes:
-      - db-data:/var/lib/mysql
+      - mongodb_data_container:/data/db
 
   server:
     image: myselfakshatha/cmad-syslog-server:latest
