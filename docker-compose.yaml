@@ -16,6 +16,8 @@ services:
   db:
     image: mongo:4.2
     restart: always
+    environment:
+      MONGODB_DATABASE=logrepo
     ports:
       - 5300:27017
     volumes:
