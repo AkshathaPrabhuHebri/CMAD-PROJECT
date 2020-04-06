@@ -4,9 +4,10 @@ pipeline{
 
     stages{
       stage("server"){
-        when{
-          changeset "**/syslog-server/**"
-        }
+
+       // when{
+         // changeset pattern: "**/syslog-server/*.java", comparator: "REGEXP", caseSensitive: true
+       // }
         stages{
           stage("build-server"){
               agent{
@@ -78,8 +79,9 @@ pipeline{
       }
       
       stage('client'){
+
         // when{
-          // changeset "**/syslog-client/**"
+        //   changeset pattern: "**/syslog-client/**", comparator: "REGEXP", caseSensitive: true
         // }
         stages{
           stage('client-build') {
