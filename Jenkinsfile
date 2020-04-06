@@ -4,8 +4,11 @@ pipeline{
 
     stages{
       stage("server"){
+	String projectDirectory = "syslog-server"
+  	String changesetPathRegex = "**/${projectDirectory}/**"
+
         when{
-          changeset "**/syslog-server/**"
+          changeset changesetPathRegex
         }
         stages{
           stage("build-server"){
@@ -78,9 +81,12 @@ pipeline{
       }
       
       stage('client'){
-        // when{
-          // changeset "**/syslog-client/**"
-        // }
+	String projectDirectory = "syslog-client"
+  	String changesetPathRegex = "**/${projectDirectory}/**"
+
+        when{
+          changeset changesetPathRegex
+         }
         stages{
           stage('client-build') {
               agent{
