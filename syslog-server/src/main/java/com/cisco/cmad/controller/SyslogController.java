@@ -84,13 +84,13 @@ public class SyslogController {
 		return new ResponseEntity<List<SeverityStatistics>>(count, HttpStatus.OK);
 	}
 	
-	//create a single user
-	@RequestMapping(path = "/user", method = RequestMethod.POST)
-	public ResponseEntity<User> add(@RequestBody User user) {
-		System.out.println(user);
-		userRepo.save(user);
-		return new ResponseEntity<User>(user, HttpStatus.CREATED);
-	}
+//	//create a single user
+//	@RequestMapping(path = "/user", method = RequestMethod.POST)
+//	public ResponseEntity<User> addUser(@RequestBody User user) {
+//		System.out.println(user);
+//		userRepo.save(user);
+//		return new ResponseEntity<User>(user, HttpStatus.CREATED);
+//	}
 
 	
 }
