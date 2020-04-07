@@ -11,25 +11,12 @@ import javax.annotation.security.RolesAllowed;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-//import javax.persistence.Temporal;
-//import javax.persistence.TemporalType;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.AggregationResults;
-import org.springframework.data.mongodb.core.aggregation.GroupOperation;
-import org.springframework.data.mongodb.core.aggregation.MatchOperation;
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,16 +24,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.cisco.cmad.config.JwtTokenUtil;
 import com.cisco.cmad.dao.SyslogRepository;
 import com.cisco.cmad.dao.UserRepository;
 import com.cisco.cmad.dto.SeverityStatistics;
 import com.cisco.cmad.model.Syslog;
+import com.cisco.cmad.model.User;
 import com.cisco.cmad.service.JwtUserDetailsService;
 
 @RestController
 @CrossOrigin
-@PreAuthorize("hasAuthority('ROLE_USER')")
 public class SyslogController {
 	
 	public static Logger logger = LoggerFactory.getLogger(SyslogController.class);
@@ -76,21 +62,24 @@ public class SyslogController {
 	
 	//get logs with start and end time
 	@RequestMapping(path = "/log", method = RequestMethod.GET)
+	@PreAuthorize("hasAuthority('ROLE_USER')")
 	public ResponseEntity<List<Syslog>> findByTimePeriod(@RequestParam(name = "startTime") Timestamp startTime, @RequestParam(name = "endTime") Timestamp endTime) {
+		List<String> deviceList=getDevicesForUser();
 		List<Syslog> logs = repo.findByTimestampBetween(startTime,endTime);
 		return new ResponseEntity<List<Syslog>>(logs, HttpStatus.OK);
 	}
 	
 	//Returns an array of arrays with severity and corresponding count
 	@RequestMapping(path = "/log/severity/count", method = RequestMethod.GET)
+	@PreAuthorize("hasAuthority('ROLE_USER')")
 	public ResponseEntity<List<SeverityStatistics>> getStats(@RequestParam(name = "startTime") Timestamp startTime, @RequestParam(name = "endTime") Timestamp endTime) {	
 		//System.out.println(startTime);
 		Date sDate = new Date(startTime.getTime());
 		//System.out.println(sDate);
 		Date eDate = new Date(endTime.getTime());
 		//System.out.println(eDate);
-		String username=jwtUserDetailsService.getUserNameFromAuthenticationContext();
-		logger.info("Request received from user {} to get severity count",username);
+		List<String> deviceList=getDevicesForUser();
+		logger.debug("Device list are {}",deviceList);
 		AggregationResults<org.bson.Document> sevStatlistTemp  =  repo.sumSeverityAndReturnAggregationResultWrapper(sDate,eDate);
 		List<org.bson.Document> sevStatlist = sevStatlistTemp.getMappedResults();
 		System.out.println(sevStatlist);
@@ -100,6 +89,13 @@ public class SyslogController {
 			count.add(new SeverityStatistics(Integer.parseInt(doc.get("_id").toString()), Long.parseLong(doc.get("total").toString()) ));
 		}
 		return new ResponseEntity<List<SeverityStatistics>>(count, HttpStatus.OK);
+	}
+	
+	private List<String> getDevicesForUser() {
+		String username=jwtUserDetailsService.getUserNameFromAuthenticationContext();
+		logger.info("Request received from user {} to get severity count",username);
+		User user=userRepo.findByUsername(username);
+		return user.getDevices();
 	}
 	
 //	//create a single user
