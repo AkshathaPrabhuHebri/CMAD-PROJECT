@@ -65,7 +65,7 @@ public class SyslogController {
 	@PreAuthorize("hasAuthority('ROLE_USER')")
 	public ResponseEntity<List<Syslog>> findByTimePeriod(@RequestParam(name = "startTime") Timestamp startTime, @RequestParam(name = "endTime") Timestamp endTime) {
 		List<String> deviceList=getDevicesForUser();
-		List<Syslog> logs = repo.findByTimestampBetween(startTime,endTime);
+		List<Syslog> logs = repo.findByTimestampBetween(startTime,endTime,deviceList);
 		return new ResponseEntity<List<Syslog>>(logs, HttpStatus.OK);
 	}
 	
@@ -80,7 +80,7 @@ public class SyslogController {
 		//System.out.println(eDate);
 		List<String> deviceList=getDevicesForUser();
 		logger.debug("Device list are {}",deviceList);
-		AggregationResults<org.bson.Document> sevStatlistTemp  =  repo.sumSeverityAndReturnAggregationResultWrapper(sDate,eDate);
+		AggregationResults<org.bson.Document> sevStatlistTemp  =  repo.sumSeverityAndReturnAggregationResultWrapper(sDate,eDate,deviceList);
 		List<org.bson.Document> sevStatlist = sevStatlistTemp.getMappedResults();
 		System.out.println(sevStatlist);
 		List<SeverityStatistics> count = new ArrayList<SeverityStatistics>();
