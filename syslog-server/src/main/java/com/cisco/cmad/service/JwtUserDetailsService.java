@@ -1,15 +1,14 @@
 package com.cisco.cmad.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User.UserBuilder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 import com.cisco.cmad.dao.UserRepository;
-import com.cisco.cmad.dto.UserInfo;
 import com.cisco.cmad.model.User;
 
 @Component
@@ -24,18 +23,15 @@ public class JwtUserDetailsService implements UserDetailsService{
 		if(user==null) {
 			throw new UsernameNotFoundException("Invalid username");
 		}
-		UserInfo userInfo=new UserInfo();
-		userInfo.setUsername(username);
-		userInfo.setPassword(user.getPassword());
-		userInfo.setEnabled(true);
-		userInfo.setCredentialsNonExpired(true);
-		userInfo.setAccountNonLocked(true);
-		userInfo.setAccountNonExpired(true);
-		return userInfo;
+		UserBuilder builder = null;
+		builder = org.springframework.security.core.userdetails.User.withUsername(username);
+		builder.password(user.getPassword());
+		builder.roles(user.getRoles().toArray(new String[user.getRoles().size()]));
+		return builder.build();
 	}
 	
 	public String getUserNameFromAuthenticationContext() {
-		UserInfo userInfo=(UserInfo)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		org.springframework.security.core.userdetails.User userInfo=(org.springframework.security.core.userdetails.User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		return userInfo.getUsername();
 	}
 

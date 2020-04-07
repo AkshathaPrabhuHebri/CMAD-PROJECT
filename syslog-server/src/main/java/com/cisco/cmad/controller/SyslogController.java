@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.security.RolesAllowed;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,6 +26,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -43,6 +46,7 @@ import com.cisco.cmad.service.JwtUserDetailsService;
 
 @RestController
 @CrossOrigin
+@PreAuthorize("hasAuthority('ROLE_USER')")
 public class SyslogController {
 	
 	public static Logger logger = LoggerFactory.getLogger(SyslogController.class);
@@ -63,12 +67,12 @@ public class SyslogController {
 		return new ResponseEntity<Syslog>(log, HttpStatus.CREATED);
 	}
 	
-	//find all logs
-	@RequestMapping(path = "/logs", method = RequestMethod.GET)
-	public ResponseEntity<List<Syslog>> findAllLogs() {
-		List<Syslog> logs = repo.findAll();
-		return new ResponseEntity<List<Syslog>>(logs, HttpStatus.OK);
-	}
+//	//find all logs
+//	@RequestMapping(path = "/log", method = RequestMethod.GET)
+//	public ResponseEntity<List<Syslog>> findAllLogs() {
+//		List<Syslog> logs = repo.findAll();
+//		return new ResponseEntity<List<Syslog>>(logs, HttpStatus.OK);
+//	}
 	
 	//get logs with start and end time
 	@RequestMapping(path = "/log", method = RequestMethod.GET)

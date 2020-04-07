@@ -1,5 +1,6 @@
 package com.cisco.cmad.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.annotation.Id;
@@ -14,7 +15,7 @@ public class User {
 	@Indexed(unique = true)
 	private String username;
 	private String password;
-	private int authLevel;
+	private List<String> roles=new ArrayList<>();
 	private List<String> devices;
 	public String getUsername() {
 		return username;
@@ -41,11 +42,12 @@ public class User {
 	public void setUid(String uid) {
 		this.uid = uid;
 	}
-	public int getAuthLevel() {
-		return authLevel;
+	public List<String> getRoles() {
+		return roles;
 	}
-	public void setAuthLevel(int authLevel) {
-		this.authLevel = authLevel;
+	public void setRoles(List<String> roles) {
+		this.roles = roles;
 	}
+	
 
 }
