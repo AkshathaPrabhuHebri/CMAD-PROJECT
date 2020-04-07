@@ -9,11 +9,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 //@Entity
 @Document
 public class Syslog {
-//	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Id
 	private String ID;
-//	@Column(name = "timestamp", columnDefinition="DATETIME")
-//	@Temporal(TemporalType.TIMESTAMP)
 	private Date timestamp;
 	private int severity;
 	private String facility;
