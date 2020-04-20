@@ -1,0 +1,46 @@
+version: "3.7"
+
+volumes:
+  mongodb_data_container:
+
+services:
+
+#  redis:
+#    image: redis:alpine
+
+#  worker:
+#    image: schoolofdevops/vote-worker
+#    depends_on:
+#      - redis
+
+  db:
+    image: mongo:4.2
+    restart: always
+    environment:
+      - MONGODB_DATABASE=logrepo
+    ports:
+      - 5300:27017
+    volumes:
+      - mongodb_data_container:/data/db
+
+  server:
+    image: myselfakshatha/cmad-syslog-server:latest
+    restart: always
+    ports:
+      - 5100:8090
+    depends_on:
+      - db
+
+  client:
+    image: myselfakshatha/cmad-syslog-client:latest
+    ports:
+      - 5200:3000
+    depends_on:
+      - server
+
+
+#  result:
+#    image:   myselfakshatha/vote
+#    ports:
+#      - 5001:80
+
