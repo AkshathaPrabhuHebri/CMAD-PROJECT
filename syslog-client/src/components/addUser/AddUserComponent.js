@@ -71,7 +71,8 @@ class AddUserComponent extends Component {
 
     render() {
         return (
-            <div>
+            <div className="jumbotron jumbotron-fluid">
+                <div class="container">
                 {this.state.showError && (
                     <div className={"alert "+this.state.errorClass} role="alert">
                         {this.state.message}
@@ -127,6 +128,7 @@ class AddUserComponent extends Component {
                         Add User
                     </button>
                 </form>
+                </div>
             </div>
         );
     }
