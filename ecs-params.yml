@@ -1,0 +1,14 @@
+version: 1
+task_definition:
+  services:
+    db:
+      cpu_shares: 256 
+      mem_limit: "300m"
+task_definition:
+  services:    
+    server:
+      cpu_shares: 256
+      mem_limit: "256m"
+    client:
+      cpu_shares: 128
+      mem_limit: "128m"
