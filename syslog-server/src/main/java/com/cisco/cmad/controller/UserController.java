@@ -1,5 +1,7 @@
 package com.cisco.cmad.controller;
 
+import java.util.List;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.security.RolesAllowed;
 
@@ -62,5 +64,10 @@ public class UserController {
 			throw new HttpErrorException(String.format("User with username %s already exists",user.getUsername()),11);
 		}
 		return new ResponseEntity<User>(user, HttpStatus.CREATED);
+	}
+	
+	@RequestMapping(path = "/user", method = RequestMethod.GET)
+	public ResponseEntity<List<User>> get() {
+		return new ResponseEntity<List<User>>(userRepository.findAll(), HttpStatus.OK);
 	}
 }

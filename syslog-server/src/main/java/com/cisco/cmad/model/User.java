@@ -8,12 +8,16 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
+
 @Document
 public class User {
 	@Id
 	private String uid;
 	@Indexed(unique = true)
 	private String username;
+	@JsonProperty(access = Access.WRITE_ONLY)
 	private String password;
 	private List<String> roles=new ArrayList<>();
 	private List<String> devices;
