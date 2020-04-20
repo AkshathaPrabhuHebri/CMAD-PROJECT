@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import AddUserComponent from '../../components/addUser/AddUserComponent';
 import { Redirect } from "react-router-dom";
 import UserViewer from '../../components/userViewer/UserViewer';
+import Logout from "../../components/logout/LogoutComponent"
 
 class UserManagementPage extends Component {
     constructor(props){
@@ -37,6 +38,7 @@ class UserManagementPage extends Component {
               <div>
                   <UserViewer></UserViewer>
               </div>
+              <Logout></Logout>
             </div>
         )
     }

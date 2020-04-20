@@ -15,7 +15,10 @@ class LogViewer extends Component {
     startTime=startTime.toString().replace("T"," ").replace("Z","");
     endTime=endTime.toString().replace("T"," ").replace("Z","");
     let self=this;
-    fetch("http://localhost:5100/log?startTime="+endTime+"&endTime="+startTime).then((resp) => resp.json()).then((data) =>{
+    let authToken=localStorage.getItem("authToken");
+    fetch("http://localhost:8090/log?startTime="+endTime+"&endTime="+startTime,{headers: {
+      'Authorization': 'Bearer '+authToken,
+    }}).then((resp) => resp.json()).then((data) =>{
       self.setState({data:data});
     })
   }
@@ -34,6 +37,7 @@ class LogViewer extends Component {
               <td>{row.severity}</td>
               <td>{row.facility}</td>
               <td>{row.message}</td>
+              <td>{row.deviceName}</td>
             </tr>
       )
     })
@@ -44,13 +48,14 @@ class LogViewer extends Component {
     console.log(this.state.data);
     return (
       <div>
-        <table className="table table-striped">
-          <thead>
+        <table className="table table-striped table-bordered table-striped table-hover">
+          <thead className="thead-dark">
             <tr>
               <th scope="col">Timestamp</th>
               <th scope="col">Severity</th>
               <th scope="col">Facility</th>
               <th scope="col">Message</th>
+              <th scope="col">Device</th>
             </tr>
           </thead>
           <tbody>

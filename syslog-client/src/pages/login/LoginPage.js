@@ -17,6 +17,18 @@ class LoginPage extends Component {
         this.showError = this.showError.bind(this);
     }
 
+    componentWillMount(){
+      let role=localStorage.getItem("role");
+      let token=localStorage.getItem("authToken");
+      if(token && token.length>0){
+         if(role=="ROLE_ADMIN"){
+            this.setState({ redirect: "/user-management" });
+         }else if(role=="ROLE_USER"){
+            this.setState({ redirect: "/dashboard" });
+         }
+      }
+   }
+
     handleChangeForUsername(event) {
         this.setState({ username: event.target.value });
     }

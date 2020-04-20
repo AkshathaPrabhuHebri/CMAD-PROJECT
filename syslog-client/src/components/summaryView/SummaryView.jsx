@@ -1,6 +1,25 @@
 import React, { Component } from 'react';
 import SummaryCard from '../summaryCard/SummaryCard.jsx';
-
+const SEVERITY=[
+    "Emergency",
+    "Alert",
+    "Critical",
+    "Error",
+    "Warning",
+    "Notice",
+    "Informational",
+    "Debug"
+  ]
+  const COLOR=[
+    "#e91e63",
+    "#d5852e",
+    "#9c27b0",
+    "#f44336",
+    "#ff9800",
+    "#2096f3",
+    "#607d8b",
+    "#8ac34a"
+  ]
 class SummaryView extends Component {
     constructor(props){
         super(props);
@@ -22,22 +41,14 @@ class SummaryView extends Component {
         this.sendRequestAndSetState(this.state.props.startTime,this.state.props.endTime)
     }
 
-    severity={
-        0:"Emergency",
-        1:"Alert",
-        2:"Critical",
-        3:"Error",
-        4:"Warning",
-        5:"Notice",
-        6:"Informational",
-        7:"Debug"
-    };
-
     sendRequestAndSetState(startTime,endTime){
         startTime=startTime.toString().replace("T"," ").replace("Z","");
         endTime=endTime.toString().replace("T"," ").replace("Z","");
         let self=this;
-        fetch("http://localhost:5100/log/severity/count?startTime="+endTime+"&endTime="+startTime).then((resp) => resp.json()).then((data) =>{
+        let authToken=localStorage.getItem("authToken");
+        fetch("http://localhost:8090/log/severity/count?startTime="+endTime+"&endTime="+startTime,{headers: {
+            'Authorization': 'Bearer '+authToken,
+          }}).then((resp) => resp.json()).then((data) =>{
           self.setState({data:data});
         })
       }
@@ -64,8 +75,8 @@ class SummaryView extends Component {
         let rows =data.map(row => {
          let stats={
             number:row.count,
-            label:row.severity,
-            color:"blue"
+            label:SEVERITY[row.severity],
+            color:COLOR[row.severity]
          };
           return (
                 <div className="col" key={row.severity}>

@@ -16,9 +16,9 @@ class SummaryCard extends Component {
     render(){
         return (
             <div >
-                <div class="sumCard">
-                <div class="firstBlock" style={{ 'color':this.state.color }}>{this.state.number}</div>
-                    <div class="secondBlock">{this.state.label}</div>
+                <div className="sumCard">
+                <div className="firstBlock" style={{ 'color':this.state.color }}>{this.state.number}</div>
+                    <div className="secondBlock">{this.state.label}</div>
                 </div>
             </div>
         )
