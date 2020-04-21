@@ -1,6 +1,8 @@
 package com.cisco.cmad.controller;
 
 import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -27,6 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cisco.cmad.dao.SyslogRepository;
 import com.cisco.cmad.dao.UserRepository;
 import com.cisco.cmad.dto.SeverityStatistics;
+import com.cisco.cmad.exception.HttpErrorException;
 import com.cisco.cmad.model.Syslog;
 import com.cisco.cmad.model.User;
 import com.cisco.cmad.service.JwtUserDetailsService;
@@ -64,6 +67,7 @@ public class SyslogController {
 	@RequestMapping(path = "/log", method = RequestMethod.GET)
 	@PreAuthorize("hasAuthority('ROLE_USER')")
 	public ResponseEntity<List<Syslog>> findByTimePeriod(@RequestParam(name = "startTime") Timestamp startTime, @RequestParam(name = "endTime") Timestamp endTime) {
+		areTimeStampsValid(startTime, endTime);
 		List<String> deviceList=getDevicesForUser();
 		List<Syslog> logs = repo.findByTimestampBetween(startTime,endTime,deviceList);
 		return new ResponseEntity<List<Syslog>>(logs, HttpStatus.OK);
@@ -72,7 +76,8 @@ public class SyslogController {
 	//Returns an array of arrays with severity and corresponding count
 	@RequestMapping(path = "/log/severity/count", method = RequestMethod.GET)
 	@PreAuthorize("hasAuthority('ROLE_USER')")
-	public ResponseEntity<List<SeverityStatistics>> getStats(@RequestParam(name = "startTime") Timestamp startTime, @RequestParam(name = "endTime") Timestamp endTime) {	
+	public ResponseEntity<List<SeverityStatistics>> getStats(@RequestParam(name = "startTime") Timestamp startTime, @RequestParam(name = "endTime") Timestamp endTime) {			
+		areTimeStampsValid(startTime, endTime);
 		//System.out.println(startTime);
 		Date sDate = new Date(startTime.getTime());
 		//System.out.println(sDate);
@@ -96,6 +101,19 @@ public class SyslogController {
 		logger.info("Request received from user {} to get severity count",username);
 		User user=userRepo.findByUsername(username);
 		return user.getDevices();
+	}
+	
+	public static void areTimeStampsValid(Timestamp startTime, Timestamp endTime )
+	{ 
+		Timestamp timestampNow = new Timestamp(System.currentTimeMillis());
+		int b2 = startTime.compareTo(timestampNow);
+		int b3 = endTime.compareTo(timestampNow);
+		if(b2>0) {
+			throw new HttpErrorException(String.format("Timestamp passed: %s is in the future", startTime), 11);
+		}
+		if (b3>0) {
+			throw new HttpErrorException(String.format("Timestamp passed: %s is in the future", endTime), 11);
+		}
 	}
 	
 //	//create a single user
