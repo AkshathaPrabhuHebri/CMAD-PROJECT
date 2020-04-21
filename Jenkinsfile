@@ -154,7 +154,9 @@ pipeline{
             echo 'Deploy the application'
             sh 'cd ..'
 	    sh 'ecs-cli compose down --cluster-config default --ecs-profile team2_profile'
-            sh 'ecs-cli compose up --cluster-config default --ecs-profile team2_profile'
+            sh 'sleep 60'
+            sh 'ecs-cli ps'
+	    sh 'ecs-cli compose up --cluster-config default --ecs-profile team2_profile'
         }
       }
     }
