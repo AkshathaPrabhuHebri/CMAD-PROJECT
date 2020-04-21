@@ -16,12 +16,17 @@
     "test:coverage": "jest --coverage"
   },
   "dependencies": {
+    "axios": "^0.19.2",
     "express": "^4.17.1",
     "prop-types": "^15.6.2",
     "react": "^16.4.1",
     "react-dom": "^16.13.1",
+    "react-filtered-multiselect": "^0.5.1",
+    "react-redux": "^7.2.0",
     "react-router": "^5.1.2",
-    "react-router-dom": "^5.1.2"
+    "react-router-dom": "^5.1.2",
+    "redux": "^4.0.5",
+    "redux-thunk": "^2.3.0"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",
@@ -59,7 +64,7 @@
       "enzyme-to-json/serializer"
     ],
     "moduleNameMapper": {
-      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga|css)$": "<rootDir>/src/utils/empty-module.js"
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga|css)$": "<rootDir>/src/test/module.js"
     }
   }
 }

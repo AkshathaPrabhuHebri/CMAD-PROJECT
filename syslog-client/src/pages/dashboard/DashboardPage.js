@@ -2,10 +2,12 @@ import React, { Component } from 'react';
 import Interval from '../../components/interval/Interval'
 import LogViewer from '../../components/logViewer/LogViewer'
 import SummaryView from '../../components/summaryView/SummaryView'
+import { Redirect } from "react-router-dom";
 import { Router, Route, Link, browserHistory, IndexRoute } from 'react-router'
-
+import Logout from "../../components/logout/LogoutComponent"
 class DashboardPage extends Component {
   
+
     constructor(props){
       super(props);
       let startDateTime=new Date();
@@ -14,7 +16,16 @@ class DashboardPage extends Component {
       this.state = {
         startTime:startDateTime.toISOString(),
         endTime:endDateTime.toISOString(),
-        hour:"1"
+        hour:"1",
+        redirect:null
+      }
+    }
+
+    componentWillMount(){
+      let role=localStorage.getItem("role");
+      let token=localStorage.getItem("authToken");
+      if(role!="ROLE_USER" || token==undefined || token ==null || token == ""){
+          this.setState({ redirect: "/login" });
       }
     }
 
@@ -30,6 +41,9 @@ class DashboardPage extends Component {
     }
 
     render() {
+      if (this.state.redirect) {
+        return <Redirect to={this.state.redirect} />;
+      }
         return (
             <div className="App">
               <div className="topDiv row">
@@ -48,6 +62,7 @@ class DashboardPage extends Component {
               <div>
                 <LogViewer props={{...this.state}}></LogViewer>
               </div>
+              <Logout></Logout>
             </div>
         );
     }

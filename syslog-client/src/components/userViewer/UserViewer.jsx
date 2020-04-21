@@ -1,43 +1,33 @@
 import React, { Component } from 'react';
+import { connect } from "react-redux";
+import {loadUsers} from "../../redux/actions/userActions";
 
-class LogViewer extends Component {
+class UserViewer extends Component {
   constructor(props){
     super(props);
     this.state={
       ...props,
-      data:[]
+      users:[]
     };
     console.log(this.state);
-    this.sendRequestAndSetState(this.state.props.startTime,this.state.props.endTime)
   }
 
-  sendRequestAndSetState(startTime,endTime){
-    startTime=startTime.toString().replace("T"," ").replace("Z","");
-    endTime=endTime.toString().replace("T"," ").replace("Z","");
-    let self=this;
-    let authToken=localStorage.getItem("authToken");
-    fetch("http://54.245.136.98:5100/log?startTime="+endTime+"&endTime="+startTime,{headers: {
-      'Authorization': 'Bearer '+authToken,
-    }}).then((resp) => resp.json()).then((data) =>{
-      self.setState({data:data});
-    })
+  componentDidMount(){
+      this.props.loadUsers();
   }
 
   componentWillReceiveProps(nextProps){
     this.setState({...nextProps});
     console.log(nextProps);
-    this.sendRequestAndSetState(nextProps.props.startTime,nextProps.props.endTime);
   }
 
   generateRows(data){
     let rows =data.map(row => {
       return (
-           <tr key={row.id}>
-              <th scope="row">{row.timestamp}</th>
-              <td>{row.severity}</td>
-              <td>{row.facility}</td>
-              <td>{row.message}</td>
-              <td>{row.deviceName}</td>
+           <tr key={row.uid}>
+              <th scope="row">{row.username}</th>
+              <td>{row.roles!=null && row.roles.join(", ")}</td>
+              <td>{row.devices!=null && row.devices.join(", ")}</td>
             </tr>
       )
     })
@@ -45,21 +35,19 @@ class LogViewer extends Component {
   }
 
   render(){
-    console.log(this.state.data);
+    console.log(this.state.users);
     return (
       <div>
         <table className="table table-striped table-bordered table-striped table-hover">
           <thead className="thead-dark">
             <tr>
-              <th scope="col">Timestamp</th>
-              <th scope="col">Severity</th>
-              <th scope="col">Facility</th>
-              <th scope="col">Message</th>
-              <th scope="col">Device</th>
+              <th scope="col">Username</th>
+              <th scope="col">Roles</th>
+              <th scope="col">Devices</th>
             </tr>
           </thead>
           <tbody>
-            {this.generateRows(this.state.data)}
+            {this.generateRows(this.state.users)}
           </tbody>
         </table>
         {/* <nav aria-label="...">
@@ -82,7 +70,11 @@ class LogViewer extends Component {
     );
   }
 }
-export default LogViewer;
+const mapStateToProps = state => {
+    console.log(state);
+    return { users: state.users }; 
+}
+export default connect(mapStateToProps, {loadUsers})(UserViewer);
 
 
 
