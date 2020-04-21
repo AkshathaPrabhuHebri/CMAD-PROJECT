@@ -40,7 +40,8 @@ def generate_syslogs():
 
 def post_syslog(syslog):
     data = json.dumps(syslog)
-    url = "http://localhost:8090/log"
+    # url = "http://localhost:8090/log"
+    url = "http://54.245.136.98:5100/log"
     headers = {"Content-Type": "application/json"}
     response = requests.request("POST", url, headers=headers, data=data)
     print(response.status_code)
