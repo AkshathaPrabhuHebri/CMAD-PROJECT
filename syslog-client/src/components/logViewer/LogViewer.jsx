@@ -16,7 +16,7 @@ class LogViewer extends Component {
     endTime=endTime.toString().replace("T"," ").replace("Z","");
     let self=this;
     let authToken=localStorage.getItem("authToken");
-    fetch("http://localhost:8090/log?startTime="+endTime+"&endTime="+startTime,{headers: {
+    fetch("http://54.245.136.98:5100/log?startTime="+endTime+"&endTime="+startTime,{headers: {
       'Authorization': 'Bearer '+authToken,
     }}).then((resp) => resp.json()).then((data) =>{
       self.setState({data:data});

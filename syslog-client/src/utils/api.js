@@ -1,6 +1,6 @@
 import axios from 'axios';
 class API{
-    static SERVER="http://localhost:8090"
+    static SERVER="http://54.245.136.98:5100"
     static authenticateURI=API.SERVER+"/authenticate";
     static userURI=API.SERVER+"/user";
 
