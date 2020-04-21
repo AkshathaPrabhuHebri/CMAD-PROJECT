@@ -153,8 +153,7 @@ pipeline{
         steps{
             echo 'Deploy the application'
             sh 'cd ..'
-	    sh 'ecs-cli compose down --cluster-config default --ecs-profile team2_profile'
-            sh 'ecs-cli compose up --cluster-config default --ecs-profile team2_profile'
+            sh 'docker-compose up -d'
         }
       }
     }
